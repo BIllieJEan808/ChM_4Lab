@@ -23,12 +23,12 @@ MatrixXd createMatrixA() {
     return A;
 }
 
-// Функция вычисления относительной Эйлеровой погрешности
+
 double computeRelativeError(const VectorXd& x_exact, const VectorXd& x_computed) {
     return (x_exact - x_computed).norm() / x_exact.norm();
 }
 
-// Расчет числа обусловленности без вывода сингулярных чисел
+
 double computeConditionNumber(const VectorXd& s) {
     double max_s = 0, min_s = numeric_limits<double>::max();
     for (int i = 0; i < s.size(); ++i) {
@@ -59,7 +59,7 @@ int main() {
         errorLU += computeRelativeError(x_exact, x);
     }
 
-    // QR (Givens rotations)
+   
     for (int run = 0; run < NUM_RUNS; ++run) {
         auto start = high_resolution_clock::now();
         x = A.householderQr().solve(f);
@@ -68,7 +68,7 @@ int main() {
         errorQR += computeRelativeError(x_exact, x);
     }
 
-    // SVD
+    
     JacobiSVD<MatrixXd> svd(A, ComputeFullU | ComputeFullV);
     VectorXd singular_values = svd.singularValues();
     double condition_number = computeConditionNumber(singular_values);
@@ -81,7 +81,7 @@ int main() {
         errorSVD += computeRelativeError(x_exact, x);
     }
 
-    // Улучшенный вывод
+    
     cout << "\nСравнение методов решения СЛАУ\n";
     cout << "-----------------------------------------\n";
     cout << "| Метод          | Время (сек)  | Ошибка     |\n";
